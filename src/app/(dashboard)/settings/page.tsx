@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Save, GraduationCap, User, Bell, Moon, Shield, LogOut } from 'lucide-react';
+import { Save, GraduationCap, Bell, Shield, LogOut, CloudUpload, Download, FileSpreadsheet, ClipboardList } from 'lucide-react';
 import { toast } from 'sonner';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -43,6 +43,9 @@ export default function SettingsPage() {
     router.push('/');
     toast.info('Logged out — redirecting to login');
   };
+
+  const [autoBackup, setAutoBackup] = useState(true);
+  const [backupEmail, setBackupEmail] = useState('principal@dps.edu');
 
   const sections = [
     {
@@ -93,6 +96,50 @@ export default function SettingsPage() {
               </div>
             </div>
           ))}
+        </div>
+      ),
+    },
+    {
+      icon: CloudUpload,
+      title: 'Data Backup & Safety',
+      desc: 'Automatic backups and data export',
+      color: 'text-sky-500',
+      content: (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between py-2 border-b">
+            <div>
+              <p className="text-sm font-medium">Auto daily backup to email</p>
+              <p className="text-xs text-muted-foreground mt-0.5">Backup frequency: Daily at 11:00 PM</p>
+            </div>
+            <div
+              className={`w-10 h-6 rounded-full relative cursor-pointer transition-colors ${autoBackup ? 'bg-emerald-500' : 'bg-muted'}`}
+              onClick={() => { setAutoBackup(v => !v); toast.success(autoBackup ? 'Auto backup disabled' : 'Auto backup enabled'); }}
+            >
+              <div className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${autoBackup ? 'right-0.5' : 'left-0.5'}`} />
+            </div>
+          </div>
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">Backup Email</label>
+            <Input value={backupEmail} onChange={e => setBackupEmail(e.target.value)} placeholder="principal@school.edu" />
+          </div>
+          <div className="p-3 bg-emerald-50 dark:bg-emerald-950/30 rounded-xl border border-emerald-100 dark:border-emerald-900 text-emerald-700 dark:text-emerald-300 text-sm flex items-start gap-2">
+            <span className="mt-0.5">✅</span>
+            <span>Last backup: <strong>12/03/2026, 11:00 PM</strong></span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <Button variant="outline" className="gap-2 text-sky-600 border-sky-200 hover:bg-sky-50 dark:border-sky-800 dark:hover:bg-sky-950/30" onClick={() => toast.success('Complete data export downloaded as Excel')}>
+              <Download className="w-4 h-4" /> Export All Data
+            </Button>
+            <Button variant="outline" className="gap-2 text-emerald-600 border-emerald-200 hover:bg-emerald-50 dark:border-emerald-800 dark:hover:bg-emerald-950/30" onClick={() => toast.success('Fee report exported!')}>
+              <FileSpreadsheet className="w-4 h-4" /> Fee Report
+            </Button>
+            <Button variant="outline" className="gap-2 text-purple-600 border-purple-200 hover:bg-purple-50 dark:border-purple-800 dark:hover:bg-purple-950/30" onClick={() => toast.success('Attendance report exported!')}>
+              <ClipboardList className="w-4 h-4" /> Attendance Report
+            </Button>
+          </div>
+          <p className="text-xs text-muted-foreground p-3 bg-muted/50 rounded-xl leading-relaxed">
+            ☁️ Your data is automatically backed up every 6 hours on secure Indian servers (Mumbai). Daily Excel reports are emailed to the registered email address.
+          </p>
         </div>
       ),
     },

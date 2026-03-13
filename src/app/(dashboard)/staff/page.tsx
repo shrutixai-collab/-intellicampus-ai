@@ -11,8 +11,16 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import Breadcrumb from '@/components/layout/Breadcrumb';
-import { staff } from '@/data/seed-data';
+import { staff, supportStaff, busRoutes, todayWorkLogs } from '@/data/seed-data';
 import type { StaffStatus } from '@/types';
+
+// Simulated punch-in data for today
+const supportStaffStatus: Record<string, { punchedIn: boolean; time: string; punchedOut?: boolean }> = {
+  ss1: { punchedIn: true, time: '06:45 AM' },
+  ss2: { punchedIn: true, time: '06:30 AM' },
+  ss3: { punchedIn: true, time: '07:00 AM' },
+  ss4: { punchedIn: true, time: '07:45 AM' },
+};
 
 // Staff members who are absent — build substitute suggestions
 const absentStaff = staff.filter(s => s.status !== 'Present');
@@ -215,6 +223,82 @@ export default function StaffPage() {
             </Card>
           );
         })}
+      </div>
+
+      {/* Support Staff Section */}
+      <div className="mt-8">
+        <div className="flex items-center gap-2 mb-4">
+          <span className="text-xl">👷</span>
+          <h2 className="text-lg font-bold">Support Staff</h2>
+          <span className="text-muted-foreground text-sm font-normal">/ सहाय्यक कर्मचारी</span>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          {supportStaff.map(member => {
+            const punchStatus = supportStaffStatus[member.id];
+            const route = busRoutes.find(r => r.driverId === member.id);
+            const workLogs = todayWorkLogs.filter(w => w.staffId === member.id);
+            const isDriver = member.role === 'Bus Driver';
+            const isWatchman = member.role === 'Watchman';
+
+            return (
+              <Card key={member.id} className="border border-border hover:shadow-md transition-all">
+                <CardContent className="p-4">
+                  {/* Header */}
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 bg-amber-100 dark:bg-amber-950/40 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-amber-700 dark:text-amber-400 text-sm font-bold">
+                        {member.name.charAt(0)}
+                      </span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-sm text-foreground leading-tight">{member.name}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{member.role}</p>
+                    </div>
+                  </div>
+
+                  {/* Punch status */}
+                  <div className="mb-3">
+                    {punchStatus?.punchedIn ? (
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                        <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                          Punched In — {punchStatus.time}
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-rose-400" />
+                        <span className="text-xs text-muted-foreground">Not yet arrived</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Role-specific info */}
+                  <div className="space-y-1.5 pt-2 border-t border-border/50">
+                    {isDriver && route && (
+                      <p className="text-xs text-foreground">
+                        🚌 Route {route.routeNo}: <span className="text-emerald-600 dark:text-emerald-400 font-medium">Journey completed ✅</span>
+                      </p>
+                    )}
+                    {isWatchman && (
+                      <p className="text-xs text-foreground">
+                        👁️ Visitors today: <span className="font-medium">5</span> &nbsp;|&nbsp; Currently inside: <span className="font-medium text-amber-600 dark:text-amber-400">2</span>
+                      </p>
+                    )}
+                    {workLogs.length > 0 && (
+                      <div className="text-xs text-muted-foreground">
+                        📋 {workLogs.slice(0, 3).map(w => w.task).join(' ✅, ')}{workLogs.length > 0 ? ' ✅' : ''}
+                      </div>
+                    )}
+                    {workLogs.length === 0 && !isDriver && !isWatchman && (
+                      <p className="text-xs text-muted-foreground">No tasks logged yet</p>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
       </div>
 
       {/* Absent staff detail modal */}

@@ -11,7 +11,10 @@
       "Bash(taskkill /F /IM node.exe)",
       "Bash(npx tsc:*)",
       "Bash(ls \"c:/Users/shrut/OneDrive/Desktop/Intellicampus ai/src/app/\\(dashboard\\)/staff/[id]/\")",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(ls -la 'c:/Users/shrut/OneDrive/Desktop/Intellicampus ai/src/app/\\(teacher\\)/teacher/')",
+      "Bash(ls -la 'c:/Users/shrut/OneDrive/Desktop/Intellicampus ai/src/app/\\(dashboard\\)/')",
+      "Bash(ls \"c:/Users/shrut/OneDrive/Desktop/Intellicampus ai/src/app/\\(teacher\\)/\")"
     ]
   }
 }

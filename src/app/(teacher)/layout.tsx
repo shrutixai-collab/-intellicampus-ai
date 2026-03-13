@@ -20,9 +20,9 @@ const teacherNavItems = [
   { href: '/teacher/syllabus', icon: BookOpen, label: 'Syllabus Progress' },
   { href: '/teacher/homework', icon: NotebookPen, label: 'Homework' },
   { href: '/teacher/students', icon: Users, label: 'My Students' },
-  { href: '/circulars', icon: Megaphone, label: 'Circulars' },
+  { href: '/teacher/circulars', icon: Megaphone, label: 'Circulars' },
   { href: '/teacher/complaints', icon: ClipboardList, label: 'My Complaints' },
-  { href: '/calendar', icon: Calendar, label: 'Calendar' },
+  { href: '/teacher/calendar', icon: Calendar, label: 'Calendar' },
   { href: '/teacher/profile', icon: UserCircle, label: 'My Profile' },
 ];
 

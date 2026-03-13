@@ -181,3 +181,45 @@ export interface StudentActivity {
   achievement?: string;
   date: string; // DD/MM/YYYY
 }
+
+export type SupportStaffRole = 'Bus Driver' | 'Helper/Peon' | 'Watchman' | 'Cleaning Staff';
+
+export interface SupportStaff {
+  id: string;
+  name: string;
+  role: SupportStaffRole;
+  phone: string;
+  routeId?: string;
+  joinDate: string;
+}
+
+export interface BusRoute {
+  id: string;
+  routeNo: string;
+  name: string;
+  stops: string[];
+  driverId: string;
+  driverName: string;
+  departureTime: string;
+  returnTime: string;
+}
+
+export interface VisitorEntry {
+  id: string;
+  visitorName: string;
+  visitorPhone: string;
+  purpose: 'Parent Meeting' | 'Delivery' | 'Official Visit' | 'Interview' | 'Other';
+  meetingWith: string;
+  entryTime: string;
+  exitTime?: string;
+  date: string;
+}
+
+export interface WorkLogEntry {
+  id: string;
+  staffId: string;
+  task: string;
+  notes?: string;
+  time: string;
+  date: string;
+}

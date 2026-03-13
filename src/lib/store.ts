@@ -50,6 +50,26 @@ export function getTeacherName(): string | null {
   return localStorage.getItem('intellicampus_teacher_name');
 }
 
+export function saveStaffPortalLogin(id: string, name: string, role: string): void {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem('intellicampus_staff_login', JSON.stringify({ id, name, role }));
+}
+
+export function getStaffPortalLogin(): { id: string; name: string; role: string } | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = localStorage.getItem('intellicampus_staff_login');
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function clearStaffPortalLogin(): void {
+  if (typeof window === 'undefined') return;
+  localStorage.removeItem('intellicampus_staff_login');
+}
+
 // Label helpers based on institution type
 export function getLabels(type: InstitutionType) {
   if (type === 'college') {
